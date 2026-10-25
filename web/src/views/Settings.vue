@@ -508,6 +508,7 @@ import {
 import { api, type ImportFileResult, type SystemInfo, type SystemSettings } from '../api'
 import PageHeader from '../components/PageHeader.vue'
 import { useListText, splitLines } from '../composables/useListText'
+import { copyText } from '../composables/useClipboard'
 import OtpInput from '../components/OtpInput.vue'
 import PasskeyManager from '../components/PasskeyManager.vue'
 import ReadonlyUsers from '../components/ReadonlyUsers.vue'
@@ -663,21 +664,7 @@ function randomEntry() {
   }
 }
 
-async function copy(text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success(t('common.copied'))
-  } catch {
-    // 非 HTTPS 环境下剪贴板 API 不可用，退回到选择复制
-    const ta = document.createElement('textarea')
-    ta.value = text
-    document.body.appendChild(ta)
-    ta.select()
-    document.execCommand('copy')
-    ta.remove()
-    ElMessage.success(t('common.copied'))
-  }
-}
+const copy = copyText
 
 // 预设项的显示名依赖当前语言，用 computed 保证切换语言后刷新
 const dnsPresets = computed(() => [

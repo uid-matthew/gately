@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useData, withBase } from 'vitepress'
 import AiNotice from './AiNotice.vue'
+import { copyText } from '../clipboard'
 import {
   Globe, RadioTower, ArrowLeftRight, ShieldCheck, Waypoints, ShieldAlert, Network, Boxes,
   Terminal, HardDrive, Clock, KeyRound, Copy, Check, Github, Lock, Eye, FileJson, Package,
@@ -52,14 +53,11 @@ async function copyCode() {
   if (!tab) {
     return
   }
-  try {
-    await navigator.clipboard.writeText(tab.code)
-    copied.value = true
+  copied.value = await copyText(tab.code)
+  if (copied.value) {
     setTimeout(() => {
       copied.value = false
     }, 1800)
-  } catch {
-    copied.value = false
   }
 }
 

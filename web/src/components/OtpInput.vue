@@ -93,7 +93,7 @@ defineExpose({ focus, shake })
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
+  opacity: 1;
   border: 0;
   padding: 0;
   font-size: 16px; /* 避免 iOS 聚焦时自动缩放 */

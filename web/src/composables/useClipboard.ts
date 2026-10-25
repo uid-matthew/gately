@@ -16,12 +16,14 @@ export function selectNode(el?: HTMLElement | null) {
 
 // copyText 复制文本；el 为页面上展示该文本的节点，降级时会选中它。
 export async function copyText(text: string, el?: HTMLElement | null) {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success(t('common.copied'))
-    return
-  } catch {
-    // 剪贴板 API 被拒绝或不可用，继续走降级路径
+  if (window.isSecureContext && navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text)
+      ElMessage.success(t('common.copied'))
+      return
+    } catch {
+      // 剪贴板 API 被拒绝，继续走降级路径
+    }
   }
   let ok = false
   if (el) {

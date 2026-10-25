@@ -23,6 +23,7 @@ import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { ArrowDownToLine, Copy, RefreshCw, Search } from 'lucide-vue-next'
 import { api } from '../../api'
+import { copyText } from '../../composables/useClipboard'
 
 const { t } = useI18n()
 
@@ -72,14 +73,7 @@ function toBottom() {
   box.value?.scrollTo({ top: box.value.scrollHeight })
 }
 
-async function copy() {
-  try {
-    await navigator.clipboard.writeText(shown.value)
-    ElMessage.success(t('common.copied'))
-  } catch {
-    ElMessage.error(t('docker.container.logs.copyFailed'))
-  }
-}
+const copy = () => copyText(shown.value, box.value)
 
 function stop() {
   window.clearInterval(timer)

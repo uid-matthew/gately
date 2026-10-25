@@ -177,6 +177,7 @@ import {
 import { api, type SystemSettings, type SystemInfo, type UpdateInfo, type UpgradeStatus } from '../api'
 import AppLogo from '../components/AppLogo.vue'
 import UpdateDialog from '../components/UpdateDialog.vue'
+import { copyText } from '../composables/useClipboard'
 
 const { t, locale } = useI18n()
 
@@ -312,14 +313,7 @@ async function upgradeUpload(ev: Event) {
   dialog.value?.upload(file)
 }
 
-async function copy(text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success(t('common.copied'))
-  } catch {
-    ElMessage.warning(t('about.copyFailed'))
-  }
-}
+const copy = copyText
 
 onMounted(async () => {
   loadProxy()

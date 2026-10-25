@@ -199,8 +199,8 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { copyText } from '../composables/useClipboard'
 import {
   Activity,
   ArrowDown,
@@ -381,14 +381,7 @@ function push(arr: number[], v: number | undefined) {
   }
 }
 
-async function copy(text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-    ElMessage.success(t('common.copied'))
-  } catch {
-    ElMessage.warning(t('overview.copyFailed'))
-  }
-}
+const copy = copyText
 
 async function load() {
   try {

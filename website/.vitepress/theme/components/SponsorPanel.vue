@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useData } from 'vitepress'
+import { copyText } from '../clipboard'
 
 const { theme, lang } = useData()
 const s = computed(() => theme.value.sponsor)
@@ -26,16 +27,8 @@ const copied = ref('')
 let timer: ReturnType<typeof setTimeout> | undefined
 
 async function copy(key: string, text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-  } catch {
-    // 非安全上下文或浏览器不支持剪贴板接口时，退回到选中文本复制
-    const ta = document.createElement('textarea')
-    ta.value = text
-    document.body.appendChild(ta)
-    ta.select()
-    document.execCommand('copy')
-    document.body.removeChild(ta)
+  if (!(await copyText(text))) {
+    return
   }
   copied.value = key
   clearTimeout(timer)

@@ -217,6 +217,7 @@ import { useListText, splitLinesOrCommas } from '../composables/useListText'
 import WebhookEditor, { type WebhookConfig } from '../components/WebhookEditor.vue'
 import type { NetInterface } from '../components/IPSourceEditor.vue'
 import { usePolling } from '../composables/usePolling'
+import { copyText } from '../composables/useClipboard'
 
 interface Rule {
   key?: string
@@ -377,8 +378,7 @@ function fmtTime(iso: string) {
 }
 
 async function copy(s: string) {
-  await navigator.clipboard?.writeText(s)
-  ElMessage.success(t('stun.copied', { text: s }))
+  await copyText(s)
 }
 
 async function load() {
